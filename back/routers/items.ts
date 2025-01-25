@@ -3,6 +3,7 @@ import auth, { RequestWithUser } from '../middleware/auth';
 import Item from '../models/Item';
 import { Error } from 'mongoose';
 import { imageUpload } from '../multer';
+import category from '../models/Category';
 
 const itemsRouter = express.Router();
 
@@ -11,7 +12,6 @@ itemsRouter.get('/', async (req, res, next) => {
     const category_id = req.query.category_id;
     const id = req.query.postId;
     let filter = {};
-    if (category_id) filter = { category: category_id };
     if (id) filter = { _id: id };
 
     const items = await Item.find(filter).populate({
