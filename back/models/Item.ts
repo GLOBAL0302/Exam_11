@@ -19,16 +19,12 @@ const ItemSchema = new Schema({
     required: true,
   },
   price: {
-    type: Number,
+    type: String,
     required: true,
   },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-  },
-  type_id: {
-    type: Schema.Types.ObjectId,
-    ref: 'Type',
   },
 });
 

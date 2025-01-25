@@ -5,6 +5,7 @@ import { Grid2 } from '@mui/material';
 import HomeContainer from './Containers/HomeContainer.tsx';
 import RegisterPage from './Features/Users/RegisterPage.tsx';
 import LoginPage from './Features/Users/LoginPage.tsx';
+import AddItems from './Features/Items/AddItems.tsx';
 
 const App = () => {
   return (
@@ -13,9 +14,10 @@ const App = () => {
       <Grid2 container>
         <Routes>
           <Route path="/" element={<HomeContainer />}></Route>
-          <Route path="/:itemType" element={<HomeContainer />}></Route>
+          <Route path="/:category_id" element={<HomeContainer />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/addItems" element={<AddItems />}></Route>
         </Routes>
       </Grid2>
     </>

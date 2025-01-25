@@ -38,7 +38,7 @@ const UserMenu: React.FC<Props> = ({ user }) => {
         </Typography>
       </Button>
       <Menu anchorEl={anchorEl} onClose={handleClose} keepMounted={true} open={Boolean(anchorEl)}>
-        <MenuItem onClick={() => navigate('/addNewItem')}>Add New Item</MenuItem>
+        <MenuItem onClick={() => navigate('/addItems')}>Add New Item</MenuItem>
         <MenuItem onClick={handleLogOut}>LogOut</MenuItem>
       </Menu>
     </>

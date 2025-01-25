@@ -39,3 +39,21 @@ export interface IValidationError {
 export interface IGlobalError {
   error: string;
 }
+
+export interface ItemResponse {
+  _id: string;
+  title: string;
+  description: string;
+  user: IUser;
+  image: File | null;
+  category: string;
+  price: string;
+}
+
+export interface IPostItemMutation {
+  title: string;
+  description: string;
+  image: File | null;
+  category: string;
+  price: string;
+}
