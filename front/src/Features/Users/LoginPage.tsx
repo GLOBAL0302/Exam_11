@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Avatar, Container, Grid2, TextField } from '@mui/material';
+import { Alert, Avatar, Container, Grid2, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import { selectLoginError } from './usersSlice.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { signInUserThunk } from './usersThunk.ts';
 
 const initialState = {
   username: '',
@@ -13,6 +16,10 @@ const initialState = {
 
 const LoginPage = () => {
   const [userForm, setUserForm] = useState(initialState);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const loginError = useAppSelector(selectLoginError);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,6 +33,8 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
+      await dispatch(signInUserThunk(userForm)).unwrap();
+      navigate('/');
     } catch (e) {
       console.error(e);
     }
@@ -48,7 +57,11 @@ const LoginPage = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-
+          {loginError && (
+            <Alert severity="error" sx={{ mt: 3, width: '100%' }}>
+              {loginError.error}
+            </Alert>
+          )}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid2 container direction={'column'} size={12} spacing={2}>
               <Grid2 size={12}>

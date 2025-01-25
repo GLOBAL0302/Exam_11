@@ -10,10 +10,10 @@ usersRouter.post('/register', async (req, res, next) => {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
+      display_name: req.body.display_name,
+      phone_number: req.body.phone_number,
     });
-
     user.generateToken();
-
     await user.save();
     res.status(200).send({ message: 'User registered successfully', user });
   } catch (error) {

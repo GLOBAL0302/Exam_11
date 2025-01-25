@@ -35,6 +35,12 @@ const UserSchema = new Schema<HydratedDocument<IUserField>, IUserModel, IUserMet
     type: String,
     required: [true, 'Token is required'],
   },
+  display_name: {
+    type: String,
+  },
+  phone_number: {
+    type: String,
+  },
 });
 
 UserSchema.pre('save', async function (next) {
@@ -53,7 +59,6 @@ UserSchema.set('toJSON', {
 });
 
 UserSchema.methods.checkPassword = async function (password: string) {
-  console.log(password, this.password);
   return bcrypt.compare(password, this.password);
 };
 

@@ -2,17 +2,25 @@ import { useState } from 'react';
 import { Avatar, Container, Grid2, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { signUpUserThunk } from './usersThunk.ts';
+import { selectRegisterError } from './usersSlice.ts';
 
 const initialState = {
   username: '',
   password: '',
+  display_name: '',
+  phone_number: '',
 };
 
 const RegisterPage = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [userForm, setUserForm] = useState(initialState);
+  const registerError = useAppSelector(selectRegisterError);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,11 +30,21 @@ const RegisterPage = () => {
     }));
   };
 
+  const getFieldError = (fieldName: string) => {
+    try {
+      return registerError?.errors[fieldName].message;
+    } catch {
+      return undefined;
+    }
+  };
+
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      await dispatch(signUpUserThunk(userForm)).unwrap();
+      navigate('/');
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -57,6 +75,8 @@ const RegisterPage = () => {
                   fullWidth
                   id="username"
                   label="Username"
+                  error={Boolean(getFieldError('username'))}
+                  helperText={getFieldError('username')}
                 />
               </Grid2>
               <Grid2 size={12}>
@@ -68,6 +88,36 @@ const RegisterPage = () => {
                   label="Password"
                   type="password"
                   id="password"
+                  error={Boolean(getFieldError('password'))}
+                  helperText={getFieldError('password')}
+                />
+              </Grid2>
+              <Grid2 size={12}>
+                <TextField
+                  required
+                  onChange={handleChange}
+                  fullWidth
+                  value={userForm.display_name}
+                  name="display_name"
+                  label="Name"
+                  type="text"
+                  id="display_name"
+                  error={Boolean(getFieldError('display_name'))}
+                  helperText={getFieldError('display_name')}
+                />
+              </Grid2>
+              <Grid2 size={12}>
+                <TextField
+                  required
+                  onChange={handleChange}
+                  fullWidth
+                  value={userForm.phone_number}
+                  name="phone_number"
+                  label="Phone number"
+                  type="text"
+                  id="phone_number"
+                  error={Boolean(getFieldError('phone_number'))}
+                  helperText={getFieldError('phone_number')}
                 />
               </Grid2>
             </Grid2>
